@@ -2,7 +2,7 @@
 //https://forkify-api.herokuapp.com/api/get?rId=${this.id}
 
 import Search from './models/Search'
-import {elements} from './base'
+import {elements,renderLoader, clearLoader,clearLoader} from './base'
 import {getInputValue,renderRecipes,clearUI} from './views/searchView'
 
 /* Global state of the app
@@ -24,11 +24,12 @@ if(query){
 
     //3. Cleanup UI for displaying result
     clearUI();
+    renderLoader(elements.searchResults);
     //4. Search for recipes
     await state.search.getResult();
 
     //5. Display recipes
-    console.log(state.search.recipes);
+    clearLoader();
     renderRecipes(state.search.recipes);
 
 }
