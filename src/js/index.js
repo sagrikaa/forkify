@@ -2,7 +2,7 @@
 //https://forkify-api.herokuapp.com/api/get?rId=${this.id}
 
 import Search from './models/Search'
-import {elements,renderLoader, clearLoader,clearLoader} from './base'
+import {elements,renderLoader, clearLoader} from './base'
 import {getInputValue,renderRecipes,clearUI} from './views/searchView'
 
 /* Global state of the app
@@ -42,3 +42,15 @@ elements.searchForm.addEventListener('submit', e=>{
 });
 
 
+//Event listener for the pagination button
+elements.resultPages.addEventListener('click',e=>{
+
+    const button = e.target.closest('.btn-inline');
+    if(button)
+    {
+        const page = parseInt(button.dataset.goto);
+        clearUI();
+
+        renderRecipes(state.search.recipes,page);}
+
+})

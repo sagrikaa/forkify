@@ -4,7 +4,8 @@ export const getInputValue = ()=>elements.searchInput.value;
 
 export const clearUI = ()=>{
     elements.searchInput.value='';
-    elements.searchResultList.innerHTML=''
+    elements.searchResultList.innerHTML='';
+    elements.resultPages.innerHTML='';
 };
 
 const limitTitle = (title , limit=17) => {
@@ -37,8 +38,43 @@ const renderRecipe = recipe =>{
     elements.searchResultList.insertAdjacentHTML("beforeend",markup);
 };
 
-export const renderRecipes = recipes =>
-{ 
-    recipes.forEach(renderRecipe) 
+const renderPaginationButton = ( type,page ) =>
+`<button class="btn-inline results__btn--${type}" data-goto=${type==="next"?(page+1):(page-1)}>
+    <span>Page ${type==="next"?(page+1):(page-1)}</span>
+    <svg class="search__icon">
+    <use href="img/icons.svg#icon-triangle-${type==="next"?'right':'left'}"></use>
+</svg>
+</button>`
+
+
+
+
+const renderPagination = (page,limit,numOfResults)=>{
+    let paginationButton ;
+    //First page:only render the next button
+   if(page===1){
+    paginationButton=renderPaginationButton('next',page);
+   }
+   //Last page:only render the prev button
+   else if(page===Math.ceil(numOfResults/limit)){
+    paginationButton = renderPaginationButton('prev',page);
+   }
+   //Any other page: render both next and prev button
+   else 
+   paginationButton = renderPaginationButton('next',page)+renderPaginationButton('prev',page);
+
+
+   elements.resultPages.insertAdjacentHTML('afterbegin',paginationButton);
+
+
+}
+
+export const renderRecipes = (recipes,page=1,limit=10) =>
+{   
+    const start = (page-1)*limit;
+    const end = page*limit;
+   
+    recipes.slice(start,end).forEach(renderRecipe); 
+    renderPagination(page,limit,recipes.length);
 };
 
