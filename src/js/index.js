@@ -3,7 +3,9 @@
 
 import Search from './models/Search'
 import {elements,renderLoader, clearLoader} from './base'
-import {getInputValue,renderRecipes,clearUI} from './views/searchView'
+import {getInputValue,renderRecipes,clearSearchUI} from './views/searchView'
+import Recipe from './models/Recipe'
+import { renderRecipe } from './views/recipeView';
 
 /* Global state of the app
 **-Current search state
@@ -14,16 +16,16 @@ import {getInputValue,renderRecipes,clearUI} from './views/searchView'
 const state = {
 
 };
-
+/*Search Controller*/
 const controlSearch = async ()=>{
 //1. Get query from the view
 const query = getInputValue();
 if(query){
-    //2. Add new serach object to the state
+    //2. Add new search object to the state
     state.search = new Search(query);
 
     //3. Cleanup UI for displaying result
-    clearUI();
+    clearSearchUI();
     renderLoader(elements.searchResults);
     //4. Search for recipes
     await state.search.getResult();
@@ -49,8 +51,42 @@ elements.resultPages.addEventListener('click',e=>{
     if(button)
     {
         const page = parseInt(button.dataset.goto);
-        clearUI();
+        clearSearchUI();
 
         renderRecipes(state.search.recipes,page);}
 
 })
+
+/* Recipe Controller*/
+const controlRecipe= async ()=>{
+//1. retrieve hash ID from the URL
+const id= window.location.hash.replace('#','');
+
+if(id){
+
+//2. Add new Recipe object to state
+state.recipe = new Recipe(id);
+
+//3. Cleanup UI for displaying the recipe
+renderLoader(elements.recipe);
+
+try{
+    //4. Retrieve recipe using the ID
+    await state.recipe.getRecipe();
+    //5. Display the recipe
+    clearLoader();
+    //renderRecipe(state.recipe.recipe);
+}catch(err){
+    console.log(err);
+    alert('Something went wrong!');
+    clearLoader();
+   
+}
+
+}
+
+}
+//Event listener for Recipe rendering
+//window.addEventListener('hashchange',controlRecipe);
+
+['hashchange','load'].forEach(event=>window.addEventListener(event,controlRecipe));

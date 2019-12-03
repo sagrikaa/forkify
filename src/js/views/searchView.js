@@ -2,7 +2,7 @@ import {elements} from '../base'
 
 export const getInputValue = ()=>elements.searchInput.value;
 
-export const clearUI = ()=>{
+export const clearSearchUI = ()=>{
     elements.searchInput.value='';
     elements.searchResultList.innerHTML='';
     elements.resultPages.innerHTML='';

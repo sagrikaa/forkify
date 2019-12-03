@@ -17,5 +17,3 @@ export default class Search{
         }
     }
 }
-
-//this.getResult('pizza')
