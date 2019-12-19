@@ -13,7 +13,7 @@ export default class Search{
     
             
         } catch (error) {
-            alert(error);        
+            alert("Server Error:"+error);        
         }
     }
 }

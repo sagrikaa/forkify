@@ -5,7 +5,7 @@ import Search from './models/Search'
 import {elements,renderLoader, clearLoader} from './base'
 import {getInputValue,renderRecipes,clearSearchUI} from './views/searchView'
 import Recipe from './models/Recipe'
-import { renderRecipe } from './views/recipeView';
+import { renderRecipe, clearRecipeUI } from './views/recipeView';
 
 /* Global state of the app
 **-Current search state
@@ -59,32 +59,34 @@ elements.resultPages.addEventListener('click',e=>{
 
 /* Recipe Controller*/
 const controlRecipe= async ()=>{
-//1. retrieve hash ID from the URL
-const id= window.location.hash.replace('#','');
+    //1. retrieve hash ID from the URL
+    const id= window.location.hash.replace('#','');
 
-if(id){
+    if(id){
 
-//2. Add new Recipe object to state
-state.recipe = new Recipe(id);
+    //2. Add new Recipe object to state
+    state.recipe = new Recipe(id);
+      //  console.log(state.recipe);
+    //3. Cleanup UI for displaying the recipe
+    clearRecipeUI();
+    renderLoader(elements.recipe);
 
-//3. Cleanup UI for displaying the recipe
-renderLoader(elements.recipe);
-
-try{
-    //4. Retrieve recipe using the ID
-    await state.recipe.getRecipe();
-    //5. Display the recipe
-    clearLoader();
-    //renderRecipe(state.recipe.recipe);
-}catch(err){
-    console.log(err);
-    alert('Something went wrong!');
-    clearLoader();
-   
-}
-
-}
-
+            try{
+                //4. Retrieve recipe using the ID
+                await state.recipe.getRecipe();
+               // console.log(state.recipe);
+                //5. Display the recipe
+                clearLoader();
+                state.recipe.calcTime();
+                state.recipe.calcServing();
+                renderRecipe(state.recipe);
+            }catch(err){
+                console.log(err);
+                alert('Something went wrong!');
+                clearLoader();
+            
+            }
+    }
 }
 //Event listener for Recipe rendering
 //window.addEventListener('hashchange',controlRecipe);
