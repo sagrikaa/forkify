@@ -3,7 +3,7 @@
 
 import Search from './models/Search'
 import {elements,renderLoader, clearLoader} from './base'
-import {getInputValue,renderRecipes,clearSearchUI} from './views/searchView'
+import {getInputValue,renderRecipes,clearSearchUI,highlightRecipe} from './views/searchView'
 import Recipe from './models/Recipe'
 import { renderRecipe, clearRecipeUI } from './views/recipeView';
 
@@ -66,7 +66,8 @@ const controlRecipe= async ()=>{
 
     //2. Add new Recipe object to state
     state.recipe = new Recipe(id);
-      //  console.log(state.recipe);
+
+    if(state.search) highlightRecipe(id);
     //3. Cleanup UI for displaying the recipe
     clearRecipeUI();
     renderLoader(elements.recipe);

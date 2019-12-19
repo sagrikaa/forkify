@@ -1,12 +1,41 @@
 import {elements} from '../base'
+import {fraction} from 'fractional'
 
 export const clearRecipeUI = ()=>{
 
     elements.recipe.innerHTML='';
     
 }
+
+const beautifyCount = count =>{
+
+    //count = 2 => 2
+    //count = 2.5 > 2 1/2
+    //count =0.5 1/2
+
+    const [int,dec] = count.toString().split('.').map(e=>parseInt(e,10));
+   // console.log(int+" , "+dec);
+    if(!dec)
+    return int ;
+
+    if(int===0){
+        const fr = new Fraction(count);
+        //console.log(fr);
+        return (`${fr.numerator}/${fr.denominator}`);
+    }
+
+    else {
+       
+
+        const fr = new Fraction(count - int);
+        return `${int} ${fr.numerator}/${fr.denominator}`
+
+    }
+    
+
+}
 export const renderRecipe = (recipe)=>{
-    console.log(recipe);
+    //console.log(recipe);
  const markup = `<figure class="recipe__fig">
  <img src="${recipe.img}" alt="${recipe.title}" class="recipe__img">
  <h1 class="recipe__title">
@@ -59,7 +88,7 @@ ${recipe.ingredients.map(e=>
    <svg class="recipe__icon">
        <use href="img/icons.svg#icon-check"></use>
    </svg>
-   <div class="recipe__count">${e.count}</div>
+   <div class="recipe__count">${beautifyCount(e.count)}</div>
    <div class="recipe__ingredient">
        <span class="recipe__unit">${e.unit}</span>
        ${e.ingredient}
