@@ -61,7 +61,6 @@ elements.resultPages.addEventListener('click',e=>{
 const controlRecipe= async ()=>{
     //1. retrieve hash ID from the URL
     const id= window.location.hash.replace('#','');
-
     if(id){
 
     //2. Add new Recipe object to state
@@ -81,6 +80,7 @@ const controlRecipe= async ()=>{
                 state.recipe.calcTime();
                 state.recipe.calcServing();
                 renderRecipe(state.recipe);
+
             }catch(err){
                 console.log(err);
                 alert('Something went wrong!');
@@ -93,3 +93,20 @@ const controlRecipe= async ()=>{
 //window.addEventListener('hashchange',controlRecipe);
 
 ['hashchange','load'].forEach(event=>window.addEventListener(event,controlRecipe));
+
+//Event Listener for the Servings change
+
+elements.recipe.addEventListener('click',e=>{
+
+if(e.target.matches('.btn-decarese , .btn-decrease *')){ 
+    if(state.recipe.serving > 1)
+    state.recipe.updateServing('dec');
+}
+else if(e.target.matches('.btn-increase , .btn-increase *')) {state.recipe.updateServing('inc');
+}
+
+clearRecipeUI();
+renderRecipe(state.recipe);
+
+
+})
