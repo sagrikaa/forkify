@@ -1,11 +1,13 @@
 // Global app controller
 //https://forkify-api.herokuapp.com/api/get?rId=${this.id}
 
-import Search from './models/Search'
-import {elements,renderLoader, clearLoader} from './base'
-import {getInputValue,renderRecipes,clearSearchUI,highlightRecipe} from './views/searchView'
-import Recipe from './models/Recipe'
+import Search from './models/Search';
+import {elements,renderLoader, clearLoader} from './base';
+import {getInputValue,renderRecipes,clearSearchUI,highlightRecipe} from './views/searchView';
+import Recipe from './models/Recipe';
 import { renderRecipe, clearRecipeUI } from './views/recipeView';
+import List from './models/List'
+
 
 /* Global state of the app
 **-Current search state
@@ -110,3 +112,5 @@ renderRecipe(state.recipe);
 
 
 })
+
+window.l=new List();
