@@ -7,12 +7,13 @@ export const clearRecipeUI = ()=>{
     
 }
 
-const beautifyCount = count =>{
+const beautifyCount = fullCount =>{
 
     //count = 2 => 2
     //count = 2.5 > 2 1/2
     //count =0.5 1/2
 
+    const count = Math.round(fullCount*1000)/1000;
     const [int,dec] = count.toString().split('.').map(e=>parseInt(e,10));
    // console.log(int+" , "+dec);
     if(!dec)

@@ -71,7 +71,6 @@ const renderPagination = (page,limit,numOfResults)=>{
 
 export const highlightRecipe = (id)=>{
     const r=Array.from(document.querySelectorAll('.results__link')).map(e=>e.classList.remove('results__link--active'));
-    console.log(r);
     document.querySelector(`a[href*="${id}"]`).classList.add('results__link--active');
 }
 

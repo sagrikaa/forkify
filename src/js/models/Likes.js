@@ -22,4 +22,12 @@ export default class Likes {
    getNumLike(){
        return this.likes.length;
    }
+
+   readStorage(){
+       const storage = localStorage.getItem('likes');
+       if(storage) this.likes =  JSON.parse(storage);
+   }
+
+   addStorage(){
+    localStorage.setItem('likes',JSON.stringify(this.likes));   }
 }

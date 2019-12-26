@@ -63,7 +63,7 @@ elements.resultPages.addEventListener('click',e=>{
 
 })
 
-/* Recipe Controller*/
+/** Recipe Controller **/
 const controlRecipe= async ()=>{
     //1. retrieve hash ID from the URL
     const id= window.location.hash.replace('#','');
@@ -98,7 +98,6 @@ const controlRecipe= async ()=>{
 
 
 /**  List Controller **/ 
-
 const listController = () => {
 
     if(!state.list) state.list = new List();
@@ -108,20 +107,20 @@ const listController = () => {
     })
 }
 state.likes = new Likes();
-showHeart(state.likes.getNumLike());
 
 
 /**  Like Controller **/ 
 const likeController = () => {
 
-    if(!state.likes) state.likes = new Likes();
 
     const currentId = state.recipe.recipe_id;
     if(!state.likes.isLiked(currentId)){
         
         //Add the recipe to likes
         const newLike = state.likes.addLike(currentId,state.recipe.publisher,state.recipe.img,state.recipe.title);
+        state.likes.addStorage();
         //Toggle the like button for recipe
+        
         toggleLike(true);
         //Add like to the Like menu
         renderLike(newLike);
@@ -132,6 +131,7 @@ const likeController = () => {
         toggleLike(false);
         //Remove from likes
         state.likes.deleteLike(currentId);
+        state.likes.addStorage();
         deleteLike(currentId)
     }
     showHeart(state.likes.getNumLike());
@@ -142,29 +142,35 @@ const likeController = () => {
 
 ['hashchange','load'].forEach(event=>window.addEventListener(event,controlRecipe));
 
-//Event Listener for the Servings change
+//Event Listener for clicks on Recipe page
 elements.recipe.addEventListener('click',e=>{
 
         // user clicked on -/ + button for changing servings    
         if(e.target.matches('.btn-decarese , .btn-decrease *')){ 
             if(state.recipe.serving > 1)
             state.recipe.updateServing('dec');
+            clearRecipeUI();
+            renderRecipe(state.recipe);
+
         }
 
-        else if(e.target.matches('.btn-increase , .btn-increase *')) {state.recipe.updateServing('inc');
+        else if(e.target.matches('.btn-increase , .btn-increase *')) {
+            state.recipe.updateServing('inc');
+            clearRecipeUI();
+            renderRecipe(state.recipe);
+ 
         }
 
         //User clicks on Add to shooping list button
         else if(e.target.matches('.recipe__btn--add, .recipe__btn--add *')){
             listController();
         }
+
         // User clicks the like  button for a recipe
         else if(e.target.matches('.recipe__love , .recipe__love * ')){
             likeController();
         }
 
-        clearRecipeUI();
-        renderRecipe(state.recipe);
 
 
 });
@@ -184,4 +190,12 @@ elements.shopping.addEventListener('click',e=>{
     }
 })
 
+
+window.addEventListener('load', e=>{
+    state.likes=new Likes();
+    state.likes.readStorage()
+    showHeart(state.likes.getNumLike());
+    state.likes.likes.forEach(e=>renderLike(e));
+
+})
 window.state= state;

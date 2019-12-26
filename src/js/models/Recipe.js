@@ -91,7 +91,7 @@ export default class Recipe{
             ingredientObj={
                 unit:ingredient[unitIndex],
                 ingredient:ingredient.slice(unitIndex+1,ingredient.length+1).join(' '),
-                count:count?count.toFixed(2):1
+                count:count?count:1
             }
 
         }
