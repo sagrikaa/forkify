@@ -8,7 +8,7 @@ export const clearSearchUI = ()=>{
     elements.resultPages.innerHTML='';
 };
 
-const limitTitle = (title , limit=17) => {
+export const limitTitle = (title , limit=17) => {
     
     const newTitle = [];
     if(title.length>limit){

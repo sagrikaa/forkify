@@ -1,6 +1,6 @@
 export default class Likes {
     constructor(){
-
+        this.likes=[]
     }
 
     addLike(id,author,img,title){
@@ -20,6 +20,6 @@ export default class Likes {
    } 
 
    getNumLike(){
-       return this.like.length;
+       return this.likes.length;
    }
 }
